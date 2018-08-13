@@ -39,7 +39,12 @@ def login_checkin(email, passwd):
 
 def register():
     try:
-        browser = webdriver.Chrome()
+        mobile_emulation = {
+            "deviceMetrics": {"width": 414, "height": 736, "pixelRatio": 3.0},
+            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+        browser= webdriver.Chrome(chrome_options=chrome_options)
         browser.delete_all_cookies()
         browser.get('http://24mail.chacuo.net')
         email_element = browser.find_element_by_id('converts')
