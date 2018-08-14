@@ -3,10 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+
 import time
 
 
-def login_checkin(email, passwd):
+def login_checkin(email):
     try:
         browser = webdriver.Chrome()
         browser.get('http://poro.ws/auth/login')
@@ -14,7 +15,7 @@ def login_checkin(email, passwd):
         email_element.send_keys(email)
         time.sleep(1)
         password_element = browser.find_element_by_id('passwd')
-        password_element.send_keys(passwd)
+        password_element.send_keys(email)
         time.sleep(1)
         password_element.send_keys(Keys.ENTER)
         wait = WebDriverWait(browser, 10)
@@ -23,6 +24,8 @@ def login_checkin(email, passwd):
         checkin.click()
         time.sleep(1)
         checkin.click()
+        info_list = [info.text for info in browser.find_elements_by_class_name("h3 block m-t-xs")]
+        print(info_list)
         # input.send_keys(Keys.ENTER)
         # wait = WebDriverWait(browser, 10)
         # wait.until(EC.presence_of_element_located((By.ID, 'content_left')))
@@ -35,7 +38,8 @@ def login_checkin(email, passwd):
         pass
 
     # nydjck04839@chacuo.net  584219
-
+    #aymgzi63459@chacuo.net
+    #xleiow26403@chacuo.net
 
 def register():
     try:
@@ -64,7 +68,12 @@ def register():
         wait = WebDriverWait(browser, 30)
         wait.until(EC.presence_of_element_located((By.ID, 'convertd')))
         browser.find_element_by_id('convertd').click()
-        code = browser.execute_script('return $("#mailview_data b").text();')  # 运用JS来获取内容值
+        try:
+            code = browser.execute_script('return $("#mailview_data").text();')# 运用JS来获取内容值
+            print(code)
+        except Exception as e:
+            print(e)
+        time.sleep(60)
         browser.switch_to.window(browser.window_handles[1])
         browser.find_element_by_id('verifycode').send_keys(code)
         browser.find_element_by_id('passwd').send_keys(email)
@@ -83,4 +92,6 @@ def register():
 # invite_code
 
 if __name__ == '__main__':
-    register()
+    emil = 'aymgzi63459@chacuo.net'
+    login_checkin(emil)
+    # register()
