@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vpn'
+    'vpn',
 ]
 
 MIDDLEWARE = [
@@ -125,4 +125,4 @@ STATICFILES_DIRS = (
        os.path.join(BASE_DIR, 'statics/').replace('\\', '/'),
 )
 
-ALLOWED_HOSTS = ['*']
+

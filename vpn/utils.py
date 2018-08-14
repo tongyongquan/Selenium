@@ -20,12 +20,24 @@ def login_checkin(email):
         password_element.send_keys(Keys.ENTER)
         wait = WebDriverWait(browser, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'checkin')))
-        checkin = browser.find_element_by_id('checkin')
-        checkin.click()
-        time.sleep(1)
-        checkin.click()
-        info_list = [info.text for info in browser.find_elements_by_class_name("h3 block m-t-xs")]
-        print(info_list)
+        browser.find_element_by_id('checkin').click()
+
+
+        connect_list=[elem.text for elem in browser.find_elements_by_class_name('h4 font-bold m-t block')]
+        info_list = [elem.text for elem in browser.find_elements_by_tag_name('strong')]
+
+        vpn = VpnInfo()
+        vpn.email = email
+        vpn.total = info_list[0]
+        vpn.used = info_list[1]
+        vpn.un_used=info_list[2]
+        vpn.status = info_list[3]
+        vpn.port=connect_list[0]
+        vpn.password = connect_list[1]
+        vpn.encryption=connect_list[2]
+        vpn.last_login=connect_list[3]
+        vpn.last_check_in=browser.find_element_by_class_name('col-xs-8').text
+        print(vpn.last_check_in)
         # input.send_keys(Keys.ENTER)
         # wait = WebDriverWait(browser, 10)
         # wait.until(EC.presence_of_element_located((By.ID, 'content_left')))
@@ -38,8 +50,9 @@ def login_checkin(email):
         pass
 
     # nydjck04839@chacuo.net  584219
-    #aymgzi63459@chacuo.net
-    #xleiow26403@chacuo.net
+    # aymgzi63459@chacuo.net
+    # xleiow26403@chacuo.net
+
 
 def register():
     try:
@@ -48,7 +61,7 @@ def register():
             "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-        browser= webdriver.Chrome(chrome_options=chrome_options)
+        browser = webdriver.Chrome(chrome_options=chrome_options)
         browser.delete_all_cookies()
         browser.get('http://24mail.chacuo.net')
         email_element = browser.find_element_by_id('converts')
@@ -69,7 +82,7 @@ def register():
         wait.until(EC.presence_of_element_located((By.ID, 'convertd')))
         browser.find_element_by_id('convertd').click()
         try:
-            code = browser.execute_script('return $("#mailview_data").text();')# 运用JS来获取内容值
+            code = browser.execute_script('return $("#mailview_data").text();')  # 运用JS来获取内容值
             print(code)
         except Exception as e:
             print(e)
