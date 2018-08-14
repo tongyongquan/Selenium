@@ -46,19 +46,19 @@ def login_checkin(email):
         pass
 
     # nydjck04839@chacuo.net  584219
-    # aymgzi63459@chacuo.net
+    # aymgzi63459@chacuo.net  522832
     # xleiow26403@chacuo.net
-
+    # 1070969926@qq.com 320266
 
 def register():
+    mobile_emulation = {
+        "deviceMetrics": {"width": 414, "height": 736, "pixelRatio": 3.0},
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    browser = webdriver.Chrome(chrome_options=chrome_options)
+    browser.delete_all_cookies()
     try:
-        mobile_emulation = {
-            "deviceMetrics": {"width": 414, "height": 736, "pixelRatio": 3.0},
-            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-        browser = webdriver.Chrome(chrome_options=chrome_options)
-        browser.delete_all_cookies()
         browser.get('http://24mail.chacuo.net')
         email_element = browser.find_element_by_id('converts')
         email = email_element.get_attribute('value') + '@chacuo.net'
@@ -66,23 +66,21 @@ def register():
         browser.execute_script('window.open()')
         browser.switch_to.window(browser.window_handles[1])
         browser.get('http://poro.ws/auth/register')
-        wait = WebDriverWait(browser, 30)
+        wait = WebDriverWait(browser, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'email')))
         time.sleep(1)
         browser.find_element_by_id('email').send_keys(email)
         browser.find_element_by_id('sendcode').click()
 
         browser.switch_to.window(browser.window_handles[0])
+        time.sleep(2)
         browser.refresh()
-        wait = WebDriverWait(browser, 30)
+        wait = WebDriverWait(browser, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'convertd')))
         browser.find_element_by_id('convertd').click()
-        try:
-            code = browser.execute_script('return $("#mailview_data").text();')  # 运用JS来获取内容值
-            print(code)
-        except Exception as e:
-            print(e)
-        time.sleep(60)
+        # code = browser.execute_script('return $("#mailview_data").text();')  # 运用JS来获取内容值
+        code = browser.find_element_by_tag_name('b').text
+        time.sleep(2)
         browser.switch_to.window(browser.window_handles[1])
         browser.find_element_by_id('verifycode').send_keys(code)
         browser.find_element_by_id('passwd').send_keys(email)
