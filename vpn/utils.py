@@ -37,6 +37,8 @@ def login_checkin(email):
     # xleiow26403@chacuo.net
     # 1070969926@qq.com 320266
     # bwkhfz83467@chacuo.net
+    # dyswjo58041@chacuo.net
+    # pimhdc26419@chacuo.net
 
 def register():
     mobile_emulation = {
@@ -50,7 +52,7 @@ def register():
         browser.get('http://24mail.chacuo.net')
         email_element = browser.find_element_by_id('converts')
         email = email_element.get_attribute('value') + '@chacuo.net'
-        print(email)
+        print("[+] get email: " + email)
         browser.execute_script('window.open()')
         browser.switch_to.window(browser.window_handles[1])
         browser.get('http://poro.ws/auth/register')
@@ -60,21 +62,20 @@ def register():
         browser.find_element_by_id('email').send_keys(email)
         browser.find_element_by_id('sendcode').click()
         browser.switch_to.window(browser.window_handles[0])
-        time.sleep(5)
-        browser.refresh()
-        wait = WebDriverWait(browser, 10)
-        wait.until(EC.presence_of_element_located((By.ID, 'convertd')))
+        print('[-] waiting email...')
+        wait = WebDriverWait(browser, 300)
+        wait.until(EC.presence_of_element_located((By.XPATH, '//tbody[@id="convertd"]/tr')))
         browser.find_element_by_id('convertd').click()
-        code = browser.find_element_by_id('mailview_data').find_element_by_tag_name('b').text
-        print(code)
-        time.sleep(2)
+        time.sleep(3)
+        code = [code.text for code in browser.find_elements_by_tag_name('b')]
+        print('[+] get code: '+code[-2])
         browser.switch_to.window(browser.window_handles[1])
-        browser.find_element_by_id('verifycode').send_keys(code)
+        browser.find_element_by_id('verifycode').send_keys(code[-2])
         browser.find_element_by_id('passwd').send_keys(email)
         browser.find_element_by_id('repasswd').send_keys(email)
         browser.find_element_by_id('code').send_keys(584219)
         browser.find_element_by_id('reg').click()
-        print('register success with '+email)
+        print('[+] register success with ' + email)
     except Exception as e:
         print(e)
     finally:
