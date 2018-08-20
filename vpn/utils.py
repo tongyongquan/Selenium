@@ -1,3 +1,5 @@
+import datetime
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -7,10 +9,20 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 
 
-def login_checkin(email):
+def login_check_in(email):
+    vpn = {}
+    mobile_emulation = {
+        "deviceMetrics": {"width": 414, "height": 736, "pixelRatio": 3.0},
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS \
+            X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    browser = webdriver.Chrome(chrome_options=chrome_options)
+    browser.delete_all_cookies()
     try:
-        browser = webdriver.Chrome()
         browser.get('http://poro.ws/auth/login')
+        wait = WebDriverWait(browser, 10)
+        wait.until(EC.presence_of_element_located((By.ID, 'email')))
         email_element = browser.find_element_by_id('email')
         email_element.send_keys(email)
         time.sleep(1)
@@ -24,26 +36,32 @@ def login_checkin(email):
         connect_list = [elem.text for elem in browser.find_elements_by_css_selector('[class="h4 font-bold m-t block"]')]
         info_list = [elem.text for elem in browser.find_elements_by_tag_name('strong')]
 
-
-
+        vpn['email'] = email
+        vpn['total'] = info_list[0]
+        vpn['used'] = info_list[1]
+        vpn['un_used'] = info_list[2]
+        vpn['status'] = info_list[3]
+        vpn['port'] = connect_list[0]
+        vpn['password'] = connect_list[1]
+        vpn['encryption'] = connect_list[2]
+        vpn['last_login'] = connect_list[3]
+        if '可以签到' in browser.find_element_by_class_name('col-xs-8').text[-19:]:
+            vpn['last_check_in'] = datetime.datetime.now()
+        else :
+            vpn['last_check_in'] = datetime.datetime.strptime(browser.find_element_by_class_name('col-xs-8').text[-19:], '%Y-%m-%d %H:%M:%S')
     except Exception as e:
         print(e)
     finally:
-        # browser.close()
-        pass
+        browser.close()
+    return vpn
 
-    # nydjck04839@chacuo.net  584219
-    # aymgzi63459@chacuo.net
-    # xleiow26403@chacuo.net
-    # 1070969926@qq.com 320266
-    # bwkhfz83467@chacuo.net
-    # dyswjo58041@chacuo.net
-    # pimhdc26419@chacuo.net
+
 
 def register():
     mobile_emulation = {
         "deviceMetrics": {"width": 414, "height": 736, "pixelRatio": 3.0},
-        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS \
+        X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
     browser = webdriver.Chrome(chrome_options=chrome_options)
@@ -73,17 +91,17 @@ def register():
         browser.find_element_by_id('verifycode').send_keys(code[-2])
         browser.find_element_by_id('passwd').send_keys(email)
         browser.find_element_by_id('repasswd').send_keys(email)
-        browser.find_element_by_id('code').send_keys(584219)
+        browser.find_element_by_id('code').send_keys(320266)
         browser.find_element_by_id('reg').click()
         print('[+] register success with ' + email)
     except Exception as e:
         print(e)
     finally:
-        time.sleep(3000)
         browser.close()
 
 
 if __name__ == '__main__':
-    # emil = 'aymgzi63459@chacuo.net'
-    # login_checkin(emil)
-    register()
+    emil = 'xleiow26403@chacuo.net'
+    vpn = login_check_in(emil)
+    print(vpn)
+    # register()
