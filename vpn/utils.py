@@ -76,9 +76,11 @@ def register():
         browser.get('http://poro.ws/auth/register')
         wait = WebDriverWait(browser, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'email')))
-        time.sleep(1)
         browser.find_element_by_id('email').send_keys(email)
-        browser.find_element_by_id('sendcode').click()
+        wait.until(EC.presence_of_element_located((By.ID, 'sendcode')))
+        browser.find_element_by_xpath('//span[@class="input-group-btn"]/button').click()
+        # browser.find_element_by_id('sendcode').click()
+        time.sleep(1)
         browser.switch_to.window(browser.window_handles[0])
         print('[-] waiting email...')
         wait = WebDriverWait(browser, 300)
@@ -90,6 +92,7 @@ def register():
         browser.switch_to.window(browser.window_handles[1])
         browser.find_element_by_id('verifycode').send_keys(code[-2])
         browser.find_element_by_id('passwd').send_keys(email)
+        time.sleep(1)
         browser.find_element_by_id('repasswd').send_keys(email)
         browser.find_element_by_id('code').send_keys(320266)
         browser.find_element_by_id('reg').click()
@@ -101,7 +104,7 @@ def register():
 
 
 if __name__ == '__main__':
-    emil = 'xleiow26403@chacuo.net'
-    vpn = login_check_in(emil)
-    print(vpn)
-    # register()
+    # emil = 'xleiow26403@chacuo.net'
+    # vpn = login_check_in(emil)
+    # print(vpn)
+     register()
