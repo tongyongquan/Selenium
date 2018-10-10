@@ -108,3 +108,7 @@ if __name__ == '__main__':
     # vpn = login_check_in(emil)
     # print(vpn)
      register()
+
+# ssr 修改备注 replace:JnJlbWFya3M9Y0c5eWJ5NTNjLVdGamVpMHVlZUppT2F6bGVXYnZlZTZ2LWkzcncmZ3JvdXA9VUc5eWItV0ZqZWkwdWVlSmlB
+# JnJlbWFya3M9NW9pUjU1cUVjM055UHo4Jmdyb3VwPTVvaVI1NXFFYzNOeVB6OA
+# uerdfx49102@chacuo.net

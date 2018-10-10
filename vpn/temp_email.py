@@ -2,6 +2,7 @@
 import requests
 import time
 from lxml import etree
+import json
 
 headers = {
     'Pragma': 'no-cache',
@@ -16,11 +17,15 @@ headers = {
     'Connection': 'keep-alive',
     'Referer': 'http://24mail.chacuo.net/',
 }
+
+# 使用会话先获取邮箱id
 s = requests.Session()
 r = s.get('http://24mail.chacuo.net/',headers=headers)
 selector = etree.HTML(r.text)
 email_id = selector.xpath('//*[@id="converts"]/@value')
 print(email_id)
+
+# 发送刷新检查是否有邮件并得到邮件id
 data = {
     'data': email_id,
     'type': 'refresh',
@@ -29,9 +34,17 @@ data = {
 while(1):
     time.sleep(3)
     r = s.post('http://24mail.chacuo.net/', data=data)
-    selector = etree.HTML(r.text)
-    print(r.text)
-    res2 = s.get('http://24mail.chacuo.net/')
-    selector2 = etree.HTML(res2.text)
-    email_content = selector2.xpath('//*[@id="mailview_data"]/div/text()')
-    print(email_content)
+    r_json = json.loads(r.text)
+    mid = r_json['data'][0]['list'][0]['MID']
+    if mid:
+        break
+
+# 获取邮件内容
+data2 = {
+    'data': email_id,
+    'type': 'mailinfo',
+    'arg': 'f='+str(mid)
+}
+r2 = s.post('http://24mail.chacuo.net/', data=data2)
+r2_json = json.loads(r.text)
+r2_json['data'][0][1][0]['DATA']
