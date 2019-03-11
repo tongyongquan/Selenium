@@ -112,3 +112,6 @@ if __name__ == '__main__':
 # ssr 修改备注 replace:JnJlbWFya3M9Y0c5eWJ5NTNjLVdGamVpMHVlZUppT2F6bGVXYnZlZTZ2LWkzcncmZ3JvdXA9VUc5eWItV0ZqZWkwdWVlSmlB
 # JnJlbWFya3M9NW9pUjU1cUVjM055UHo4Jmdyb3VwPTVvaVI1NXFFYzNOeVB6OA
 # uerdfx49102@chacuo.net
+
+
+#ssr://MTc4LjE3MC41NC43OTo1NzU5MjphdXRoX2FlczEyOF9tZDU6Y2hhY2hhMjA6dGxzMS4yX3RpY2tldF9hdXRoOlVqRnBRa053Lz9vYmZzcGFyYW09JnByb3RvcGFyYW09
